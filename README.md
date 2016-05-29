@@ -1,15 +1,18 @@
 pypboy
 ======
 
-Remember that one Python Pip-Boy 3000 project? Neither do we!<br>
+Remember that one Python Pip-Boy 3000 project? Neither do we! (But GitHub and BitBucket do!)<br>
+This fork will be updated with any GPIO changes, etc. So far I have only minor changes (to the config). However, if I hit bugs, I plan to fix them! 👍
+
 Python/Pygame interface, emulating that of the Pipboy-3000.<br> 
 Uses OSM for map data and has been partially tailored to respond to physical switches over Raspberry Pi's GPIO<br>
-Work with Screen TFT 2.8" Capacitive of Adafruit<br>
+Works with Screen TFT 2.8" Capacitive of Adafruit. 
 
-* By Sabas of The Inventor's House Hackerspace modifications of GPS and Mapillary<br>
+* You'll see my name here if I contribute anything significant. 😉
 
-* By grieve work original<br>
-* 
+* By Sabas of The Inventor's House Hackerspace modifications of GPS and Mapillary
+
+* By grieve work original
 
 Contribuyendo a este programa se da la bienvenida con gusto.<br>
 
