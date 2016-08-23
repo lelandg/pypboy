@@ -1,15 +1,14 @@
 from pypboy import BaseModule
-from pypboy.modules.items import weapons
-from pypboy.modules.items import apparel
 from pypboy.modules.items import aid
-from pypboy.modules.items import misc
 from pypboy.modules.items import ammo
-
+from pypboy.modules.items import apparel
+from pypboy.modules.items import misc
+from pypboy.modules.items import weapons
 
 class Module(BaseModule):
 
 	label = "ITEMS"
-	GPIO_LED_ID = 29 #GPIO27 #21
+	GPIO_LED_ID = 27 #GPIO27 #21
 
 	def __init__(self, *args, **kwargs):
 		self.submodules = [
