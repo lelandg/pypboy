@@ -1,4 +1,9 @@
+# See GitHub history for authoring history. This file had no history when I (Leland Green) needed
+# to fix all problems with the code *and* add support for multiplexers, all to build a more realistic
+# Pip Boy! (It's all for my brother Noel!)
 import pygame
+import sys
+
 import config
 import os
 
@@ -29,7 +34,10 @@ except:
 
 print "config.SOUND_ENABLED = {SOUND_ENABLED}".format(SOUND_ENABLED = config.SOUND_ENABLED)
 
-if __name__ == "__main__":
+def main(argc, argv):
     boy = Pypboy('Pip-Boy 3000', config.WIDTH, config.HEIGHT)
     print "RUN"
     boy.run()
+
+if __name__ == '__main__':
+    main(len(sys.argv), sys.argv)

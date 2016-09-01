@@ -1,8 +1,11 @@
 """
 A GPIO abstraction class used to "add logical pins" to the physical GPIO structure.
-By simply importing this class instead of RPi.GPIO (or GPIO), simply import from this class.
+By simply importing this class instead of RPi.GPIO (or GPIO), you get free multiplexing for (currently) two
+distinct multiplexers. (The code does not limit the number that you could add, it has only automated support
+for two because that's the most I can use in my current project. Stay tuned, kids!)
+
 If your GPIO pin number is a "normal" GPIO number, the normal underlying routines will be called, completely
-transparent to you.
+transparent to you. If it
 
 Initially written to encapsulate  multiplexer functionality transparently. This module simulates an "extended GPIO" by
 adding "extended pin numbers" using a simple scheme of binary packing. That is, since  the number 40 (the number of

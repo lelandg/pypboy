@@ -7,7 +7,7 @@ transparent to you.
 Initially written to encapsulate  multiplexer functionality transparently. This module simulates an "extended GPIO" by
 adding "extended pin numbers" using a simple scheme of binary packing. That is, since  the number 40 (the number of
 physical GPIO pins) will fit into six bits, we use the other two bits of an eight-bit number to store a
-"multiplexer number", which is actually an encoded address. A value of 1 will be the first multiplexer, 2to is the
+"multiplexer number", which is actually an encoded address. A value of 1 will be the first multiplexer, 2 is the
 second one, and so forth.
 
 Written by Leland Green... (Boogieman/aBoogieman)
@@ -21,15 +21,15 @@ import pypboy.gpio.multiplexer as multiplexer
 
 
 class gpio(GPIO):
-    # Defaults for multiplexer 1
+    # Defaults for multiplexer 1 -- for 8 channels you need 3 selectors:
     chselA1 = 4
     chselB1 = 17
     chselC1 = 27
 
-    # Defaults for multiplexer 2
+    # Defaults for multiplexer 2 -- for 4 channels (with or without dual) you only need 2 selectors, so...
     chselA2 = 22
     chselB2 = 23
-    chselC2 = -1
+    chselC2 = -1 # ... we set the last one to -1 which indicates it's not used.
 
     def __init__(self, *args, **kwargs):
         """
