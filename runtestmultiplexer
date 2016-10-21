@@ -1,0 +1,8 @@
+#!/bin/bash
+clear
+
+sudo rm -f ./testmultiplexer.log
+sudo python testmultiplexer.py 
+echo '------- End of script. Log file:'
+cat ./testmultiplexer.log
+

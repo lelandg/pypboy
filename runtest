@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo rm -f ./testGpioMultiplexer.log
+sudo python testGpioMultiplexer.py 
+echo '------- End of script. Log file:'
+cat ./testGpioMultiplexer.log
+
