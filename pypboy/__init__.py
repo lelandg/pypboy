@@ -1,7 +1,10 @@
+import logging
+
 import pygame
+
 import game
-import config
 import pypboy.ui
+from pypboy import config
 
 if config.GPIO_AVAILABLE:
     import gpio as gpio
@@ -13,9 +16,9 @@ class BaseModule(game.EntityGroup):
     def __init__(self, boy, *args, **kwargs):
         super(BaseModule, self).__init__()
 
-        print "BaseModule.__init__(): config.GPIO_AVAILABLE = {GPIO_AVAILABLE}".format(GPIO_AVAILABLE=config.GPIO_AVAILABLE)
+        logging.info("BaseModule.__init__(): config.GPIO_AVAILABLE = {GPIO_AVAILABLE}".format(GPIO_AVAILABLE=config.GPIO_AVAILABLE))
         if config.GPIO_AVAILABLE:
-            print "setting output mode for GPIO_LED_ID = {GPIO_LED_ID}".format(GPIO_LED_ID=self.GPIO_LED_ID)
+            logging.info("setting output mode for GPIO_LED_ID = {GPIO_LED_ID}".format(GPIO_LED_ID=self.GPIO_LED_ID))
             gpio.setup(self.GPIO_LED_ID, gpio.OUT)
             gpio.output(self.GPIO_LED_ID, False)
 
@@ -55,7 +58,7 @@ class BaseModule(game.EntityGroup):
             self.footer.select(self.footer.menu[module])
             self.add(self.active)
         else:
-            print "No submodule at %d" % module
+            logging.info("No submodule at {0}".format(module))
 
     def render(self, interval):
         self.active.render(interval)
@@ -79,7 +82,7 @@ class BaseModule(game.EntityGroup):
         self.paused = True
         # TODO: LEDs
         if config.GPIO_AVAILABLE:
-            # print "handle_pause(): GPIO_LED_ID = {GPIO_LED_ID}".format(GPIO_LED_ID=self.GPIO_LED_ID)
+            # logging.info("handle_pause(): GPIO_LED_ID = {GPIO_LED_ID}".format(GPIO_LED_ID=self.GPIO_LED_ID))
             gpio.output(self.GPIO_LED_ID, False)
 
     def handle_resume(self):

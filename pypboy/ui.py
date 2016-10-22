@@ -1,7 +1,9 @@
-import game
-import config
-import pygame
 import datetime
+
+import pygame
+
+import game
+from pypboy import config
 
 
 class Header(game.Entity):

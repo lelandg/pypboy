@@ -1,16 +1,20 @@
 import logging
-import traceback
-import datetime
-import os
 import sys
-import pypboy.gpio.gpio as gpio
-import RPi.GPIO as GPIO
+import traceback
 
-GPIO.setmode(GPIO.BCM)
+#import RPi.gpio as gpio
+import time
+
+#import pypboy.gpio as gpio
+from pypboy import gpio
+#from pypboy import config
+
+gpio.setmode(gpio._GPIO.BCM)
 
 LOGFILENAME = './testGpioMultiplexer.log'
 DEBUG = True
 
+gpio.DEBUG = DEBUG
 
 def setup_log_colors():
     logging.addLevelName(logging.DEBUG, '\033[1;37m%s\033[1;0m' % logging.getLevelName(logging.DEBUG))
@@ -35,47 +39,68 @@ def log_handler(level, msg):
     method = getattr(logging, level)
     method(msg)
 
+def my_log(msg):
+    logging.info(msg)
+    print msg
+
 
 def run_tests():
-    # Setup 8 channel input on muxed GPIO pins 41-47, inclusive.
-    g = gpio.gpio()
-    for ch in range(40, 48):
-        g.setup(ch, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  # Switches are input
+    # Setup 8 channel input on muxed gpio pins 41-47, inclusive.
+    ports = []
+    # 1st, for a multiplexed rotary switch.
+    for j in range(40, 45):
+        x = gpio.gpiox(extended=j, actual=3, mode=gpio.IN, pud=gpio.PUD_DOWN)
+        ports.append(x)
 
-    # Setup 8 channel input on muxed GPIO pins 80-82, inclusive.
-    for ch in range(80, 83):
-        g.setup(ch, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    # Then for the 3 "LED switches", the switches first...
+    for j in range(80,83):
+        x = gpio.gpiox(extended=j, actual=15, mode=gpio.IN, pud=gpio.PUD_DOWN)
+        ports.append(x)
 
-    # Setup 3 channel output on muxed GPIO pins 83-85
-    for ch in range(83, 86):
-        g.setup(ch, GPIO.OUT)
+    # ... and then LEDs.
+    for j in range(83,86):
+        x = gpio.gpiox(extended=j, actual=14)
+        ports.append(x)
 
-    sw1 = -1  # For display via print
-    sw2 = -1  # For display via print
+    chsel1 = [4, 17, 27]
+    chsel2 = [22, 23, -1]
+
+    g = gpio.gpio(chsel1 = chsel1, chsel2 = chsel2, ports=ports)
+
+    # Initialize a few things for our loop below:
+    sw1 = -1  # For display via log/print
+    sw2 = -1  # For display via log/print
     led = -1  # LED portion of the LED-Button that was last pressed. (This will be the one that's lit up.)
 
     # Display a banner corresponding to the output of print statement below.
-    print "\r\n\r\n{title1}{title2}".format(title1='Active Switch 40-48'.ljust(40),
+    s = "{title1}{title2}".format(title1='Active Switch 40-48'.ljust(40),
                                             title2='Active Switch 80-83'.ljust(40))
-    while (1):
+    logging.info(s)
+
+    while 1:
+        for portnum in range(40, 45):  # Check the "switch inputs" that are really a rotary switch
+            if gpio.HIGH == g.input(portnum):
+                sw1 = 40 - portnum  # Calculate number for display, only
+                if DEBUG: my_log('Active switch on extended GPIO port# {0}'.format(portnum))
+                break
+
+        for portnum in range(80, 83):  # Check "LED-Buttons"
+            if g.input(portnum):
+                sw2 = 80 - portnum  # Calculate number for display, only
+                if DEBUG: my_log('Active switch on extended GPIO port# {0}'.format(portnum))
+                if led != -1:
+                    g.output(led, 0)  # Turn off the LED that went with previous switch
+                led = portnum + 3
+                g.output(led, 1)  # Turn on LED that goes with this switch
+                break
+
         # Display the current values
         s1 = str(sw1).ljust(40)
         s2 = str(sw2).ljust(40)
-        print "\r%s%s" % (s1, s2)
+        my_log("{0}{1}".format(s1, s2))
 
-        for ch in range(40, 48):  # Check the "switch inputs" that are really a rotary switch
-            if g.input(ch):
-                sw1 = 39 - ch  # Calculate number for display, only
-                break
-
-        for ch in range(80, 83):  # Check "LED-Buttons"
-            if g.input(ch):
-                sw2 = 79 - ch
-                if led != -1:
-                    g.output(led, 0)  # Turn off the LED that went with previous switch
-                led = ch + 3
-                g.output(led, 1)  # Turn on LED that goes with this switch
-                break
+        # And then sleep on it a while... :)
+        time.sleep(0.5)
 
 
 def main(argc, argv):
@@ -84,10 +109,10 @@ def main(argc, argv):
         setup_log(LOGFILENAME, trace=DEBUG)
         run_tests()
     except:
-        traceback.print_exc()  # Print the error
+        logging.error(traceback.format_exc())  # Log the error
         error = traceback.format_exc()  # and format to log it (if possible)
     finally:
-        GPIO.cleanup()
+        gpio.cleanup()
         if error:
             logging.error(error)
 

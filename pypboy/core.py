@@ -1,8 +1,10 @@
+import logging
+
 import pygame
-import config
+
 import game
 import pypboy.ui
-
+from pypboy import config
 from pypboy.modules import data
 from pypboy.modules import items
 from pypboy.modules import stats
@@ -49,7 +51,7 @@ class Pypboy(game.core.Engine):
 
     def init_gpio_controls(self):
         for pin in config.GPIO_ACTIONS.keys():
-            print "Initializing pin %s as action '%s'" % (pin, config.GPIO_ACTIONS[pin])
+            logging.debug("Initializing pin %s as action '%s'" % (pin, config.GPIO_ACTIONS[pin]))
             gpio.setup(pin, gpio.IN)
             self.gpio_actions[pin] = config.GPIO_ACTIONS[pin]
 
@@ -78,7 +80,7 @@ class Pypboy(game.core.Engine):
             self.active.handle_action("resume")
             self.add(self.active)
         else:
-            print "Module '%s' not implemented." % module
+            logging.warn("Module '{0}' not implemented.".format(module))
 
     def handle_action(self, action):
         if action.startswith('module_'):

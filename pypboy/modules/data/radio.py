@@ -1,5 +1,5 @@
 import pypboy
-import config
+from pypboy import config
 
 from pypboy.modules.data import entities
 

@@ -1,3 +1,5 @@
+import logging
+
 import pygame
 
 WIDTH = 480
@@ -85,3 +87,12 @@ pygame.font.init()
 FONTS = {}
 for x in range(10, 28):
     FONTS[x] = pygame.font.Font('monofonto.ttf', x)
+
+try:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BCM)
+    GPIO_AVAILABLE = True
+except Exception, e:
+    logging.error("*** GPIO UNAVAILABLE! ***{0}".format(e))
+    GPIO_AVAILABLE = False
+

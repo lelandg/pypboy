@@ -17,6 +17,13 @@ Written by Leland Green... (Boogieman/aBoogieman)
 Contact me via Section9.space , on Google+ or Facebook.
 """
 
-# This is the preferred way to code __init__.py. By using __all__, you support "from pypboy.gpio import *" syntax.
-__all__ = ['gpio', 'multiplexer']
+import RPi.GPIO as _GPIO
 
+BCM = _GPIO.BCM
+
+from RPi.GPIO import *
+
+from gpio import *
+
+#from pypboy.gpio import gpio
+#from pypboy.gpio import multiplexer

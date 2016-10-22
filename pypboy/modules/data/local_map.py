@@ -1,7 +1,7 @@
 import pygame
-import pypboy
-import config
 
+import pypboy
+from pypboy import config
 from pypboy.modules.data import entities
 
 

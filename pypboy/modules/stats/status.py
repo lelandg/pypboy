@@ -1,8 +1,9 @@
-import pypboy
 import pygame
+
 import game
-import config
+import pypboy
 import pypboy.ui
+from pypboy import config
 
 
 class Module(pypboy.SubModule):

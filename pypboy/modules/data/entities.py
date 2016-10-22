@@ -1,11 +1,13 @@
+import logging
 import os
-import game
-import config
-import pygame
 import threading
-import pypboy.data
-
 from random import choice
+
+import pygame
+
+import game
+import pypboy.data
+from pypboy import config
 
 
 class Map(game.Entity):
@@ -57,7 +59,7 @@ class Map(game.Entity):
             if tag[3] in config.AMENITIES:
                 image = config.AMENITIES[tag[3]]
             else:
-                print "Unknown amenity: %s" % tag[3]
+                logging.info("Unknown amenity: %s" % tag[3])
                 image = config.MAP_ICONS['misc']
             pygame.transform.scale(image, (10, 10))
             self._map_surface.blit(image, (tag[1], tag[2]))
@@ -160,7 +162,7 @@ class MapGrid(game.Entity):
             if self.tags[name][2] in config.AMENITIES:
                 image = config.AMENITIES[self.tags[name][2]]
             else:
-                print "Unknown amenity: %s" % self.tags[name][2]
+                logging.info("Unknown amenity: %s" % self.tags[name][2])
                 image = config.MAP_ICONS['misc']
             pygame.transform.scale(image, (10, 10))
             self.image.blit(image, (self.tags[name][0], self.tags[name][1]))
@@ -181,7 +183,7 @@ class MapGrid(game.Entity):
         # 		1
         # 	)
         # except Exception, e:
-        # 	print(e)
+        # 	logging.info('{0}'.format(e))
         # 	pass
 
     def redraw_map(self, *args, **kwargs):
@@ -231,7 +233,7 @@ class RadioStation(game.Entity):
         for f in os.listdir(self.directory):
             if f.endswith(".mp3") or f.endswith(".ogg") or f.endswith(".wav"):
                 files.append(self.directory + f)
-        print files
+        logging.info('files={0}'.format(files=files))
         return files
 
 

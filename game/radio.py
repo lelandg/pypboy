@@ -1,4 +1,5 @@
 # encoding=utf-8
+import logging
 
 import game
 import os
@@ -164,7 +165,7 @@ class Oscilloscope:
 			if not self.embedded:
 				pygame.display.flip()  
 		except Exception,e:
-			print traceback.format_exc()
+			logging.error(traceback.format_exc())
 
 def play_pygame(file):
 	
@@ -218,4 +219,4 @@ if __name__ == "__main__":
 		if files:
 			play_pygame(files[randint(0,len(files)-1)])
 	except Exception, e:
-		print traceback.format_exc()
+		logging.error(traceback.format_exc())
