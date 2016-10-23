@@ -190,10 +190,10 @@ class gpio(object):
             self.ports1 = {}
             self.ports2 = {}
             for key, value in self.ports.iteritems():
-                if key >= 40 <= 79:
+                if 40 <= key <= 79:
                     self.ports1[key] = value
                 else:
-                    if key >= 80 <= 79:
+                    if 80 <= key <= 120:
                         self.ports2[key] = value
 
             self.muxer1 = multiplexer.multiplexer(self.chselA1, self.chselB1, self.chselC1, ports=self.ports1)
@@ -309,37 +309,34 @@ class gpio(object):
                 # A special channel number for a multiplexer
                 muxer = self.muxer1
 
-                if channel > 80:
+                if channel >= 80:
+                    logging.debug('Using muxer2')
                     muxer = self.muxer2
+                else:
+                    logging.debug('Using muxer1')
 
                 nch = channel
-                muxer.setchan(nch)
 
-                return nch % 40  # Always return the "real" gpio port number
+                return muxer.setchan(nch)
             else:
                 return channel
 
         def output(self, channel, value):
             logging.debug('__gpio.output({0})'.format(channel))
-            self._setchan(channel)
-            if self.ports.has_key(channel):
-                x = self.ports[channel]
-                return _GPIO.output(x.gpio, value)
+            pin = self._setchan(channel)
+            if pin:
+                return _GPIO.output(pin, value)
             else:
-                if channel >= 40:
-                    raise ValueError('Must setup channel {0} before calling input()!'.format(channel))
-            return _GPIO.output(channel, value)
+                return _GPIO.output(channel, value)
 
         def input(self, channel):
             logging.debug('__gpio.input({0})'.format(channel))
-            self._setchan(channel)
-            if self.ports.has_key(channel):
-                x = self.ports[channel]
-                return _GPIO.input(x.gpio)
+            pin = self._setchan(channel)
+            logging.debug('pin = {p}'.format(p=pin))
+            if pin:
+                return _GPIO.input(pin)
             else:
-                if channel >= 40:
-                    raise ValueError('Must setup channel {0} before calling input()!'.format(channel))
-            return _GPIO.input(channel)
+                return _GPIO.input(channel)
 
         def setupall(self):
             logging.debug('__gpio.setupall()')

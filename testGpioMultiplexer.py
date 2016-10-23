@@ -6,6 +6,8 @@ import traceback
 import time
 
 #import pypboy.gpio as gpio
+import datetime
+
 from pypboy import gpio
 #from pypboy import config
 
@@ -41,7 +43,7 @@ def log_handler(level, msg):
 
 def my_log(msg):
     logging.info(msg)
-    print msg
+    print str(datetime.datetime.now()) + " " + msg
 
 
 def run_tests():
@@ -59,7 +61,7 @@ def run_tests():
 
     # ... and then LEDs.
     for j in range(83,86):
-        x = gpio.gpiox(extended=j, actual=14)
+        x = gpio.gpiox(extended=j, actual=14, mode=gpio.OUT)
         ports.append(x)
 
     chsel1 = [4, 17, 27]
@@ -77,30 +79,46 @@ def run_tests():
                                             title2='Active Switch 80-83'.ljust(40))
     logging.info(s)
 
+    prevbutton = -1 # Used only to test "LED-buttons"
     while 1:
         for portnum in range(40, 45):  # Check the "switch inputs" that are really a rotary switch
             if gpio.HIGH == g.input(portnum):
-                sw1 = 40 - portnum  # Calculate number for display, only
+                sw1 = portnum  # Calculate number for display, only
                 if DEBUG: my_log('Active switch on extended GPIO port# {0}'.format(portnum))
                 break
 
+        slept = False
         for portnum in range(80, 83):  # Check "LED-Buttons"
-            if g.input(portnum):
-                sw2 = 80 - portnum  # Calculate number for display, only
+            led = portnum + 3
+            if led != -1:
+                if prevbutton == led:
+                    signal = 1
+                else:
+                    signal = 0
+                g.output(led, signal)  # Turn the LED on/off
+            if gpio.HIGH == g.input(portnum):
+                if prevbutton != -1 and portnum != prevbutton:
+                    g.output(prevbutton+3, 0) # Turn off the previous one
+                prevbutton = sw2 = portnum  # Calculate number for display, only
                 if DEBUG: my_log('Active switch on extended GPIO port# {0}'.format(portnum))
-                if led != -1:
-                    g.output(led, 0)  # Turn off the LED that went with previous switch
-                led = portnum + 3
-                g.output(led, 1)  # Turn on LED that goes with this switch
-                break
+                g.output(led, 1)    # Turn on LED that goes with this switch
+                time.sleep(0.5)     # Linger long enough that it "stays on" (until next loop)
+                slept = True
+            else:
+                if __name__ == '__main__':
+                    time.sleep(0.1)     # Linger just enough that it "really looks off".
 
-        # Display the current values
-        s1 = str(sw1).ljust(40)
-        s2 = str(sw2).ljust(40)
-        my_log("{0}{1}".format(s1, s2))
+            if led != -1:
+                g.output(led, 1)  # Turn the LED on/off
+
+        # # Display the current values
+        # s1 = str(sw1).ljust(40)
+        # s2 = str(sw2).ljust(40)
+        # my_log("s1={0}, s2={1}".format(s1, s2))
+        my_log("")
 
         # And then sleep on it a while... :)
-        time.sleep(0.5)
+        if not slept: time.sleep(0.5)
 
 
 def main(argc, argv):

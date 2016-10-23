@@ -108,10 +108,21 @@ class multiplexer:
         if self.chselc >= 0:
             GPIO.output(self.chselc, n3)
 
-        if self.multimode:
+        x = None
+        if self.ports.has_key(chan):
             x = self.ports[chan]
+
+        if self.multimode:
             logging.debug('multimode: x = {0}'.format(x))
             GPIO.setup(x.gpio, x.mode)
+        else:
+            logging.debug('not multimode: x = {x}'.format(x=x))
+
+        if x:
+            return x.gpio
+        else:
+            return None
+
 
     def __repr__(self):
         return 'chsela = {chsela}, chselb = {chselb}, chselc = {chselc}, ports = {ports}'. \
