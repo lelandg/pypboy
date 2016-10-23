@@ -2,4 +2,6 @@
 .project
 .pydevproject
 .settings
+.idea
+.name
 lib
