@@ -2,6 +2,7 @@ pypboy
 ======
 
 ***Warning:*** 
+
     * This Pip Boy project is non-functional and requires special hardware. See custom schematic in Schematics folder
     * This schematic is untested, as such. I drew it after-the-fact. I'm new to drawing schematics, but I 
     believe it is 100% correct. I did not generate a board because I (committed a newbie mistake and) used
@@ -9,6 +10,7 @@ pypboy
     of doing it manually and reconnecting each pin? (I could do this.)
 
 ***However:*** 
+
     * The drop-in replacement for RPi.GPIO (pypboy.gpio) is working with two multiplexers, giving (at least) 16 additional 
     "GPIO pins" that you can use at the cost of between 6 and 8 actual pins. (Depending on how many channels you use.
     * You can pull this module out and use it by itself if you'd prefer. Please just give me and the other authors credit
