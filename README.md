@@ -1,15 +1,22 @@
 pypboy
 ======
 
-***Warning:*** This project is non-functional and requires special hardware.<br>
-***However:*** The drop-in replacement for RPi.GPIO (pypboy.gpio) is working with two multiplexers, giving (at least)
-16 additional "GPIO pins" that you can use at the cost of between 6 and 8 actual pins. (Depending on how many channels
-you use.<br>
-You can pull this module out and use it by itself if you'd prefer. Please just give me and the other authors credit
-(by branching this project, or simply giving credit in the files).
-Channel addressing pins are binary, so with 3 pins you can go 2^3 or 8 multiplexed pins and only multiplexed 4 pins for
-2-channel addressing (2^2 = 4)<br>
-You may have an easier time if you start with the original project here:
+***Warning:*** 
+    * This Pip Boy project is non-functional and requires special hardware. See custom schematic in Schematics folder
+    * This schematic is untested, as such. I drew it after-the-fact. I'm new to drawing schematics, but I 
+    believe it is 100% correct. I did not generate a board because I (committed a newbie mistake and) used
+    the "full" RPi 3 board. I should have used only the pins. Does anyone know how to replace these, short
+    of doing it manually and reconnecting each pin? (I could do this.)
+
+***However:*** 
+    * The drop-in replacement for RPi.GPIO (pypboy.gpio) is working with two multiplexers, giving (at least) 16 additional 
+    "GPIO pins" that you can use at the cost of between 6 and 8 actual pins. (Depending on how many channels you use.
+    * You can pull this module out and use it by itself if you'd prefer. Please just give me and the other authors credit
+    (by branching this project, or simply giving credit in the files).
+    * Channel addressing pins are binary, so with 3 pins you can go 2^3 or 8 multiplexed pins and only multiplexed 4 pins for
+     2-channel addressing (2^2 = 4)
+
+**If any of this is confusing for you** then you may have an easier time if you start with the original project here:
  https://github.com/sabas1080/pypboy
 
 ---
