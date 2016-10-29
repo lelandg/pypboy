@@ -1,6 +1,6 @@
 """
 A GPIO abstraction class used to "add logical pins" to the physical GPIO structure.
-By simply importing this class instead of RPi.GPIO (or GPIO), simply import from this class.
+Simply import this class instead of RPi.GPIO (or GPIO).
 If your GPIO pin number is a "normal" GPIO number, the normal underlying routines will be called, completely
 transparent to you.
 
@@ -9,6 +9,8 @@ adding "extended pin numbers" using a simple scheme of binary packing. That is, 
 physical GPIO pins) will fit into six bits, we use the other two bits of an eight-bit number to store a
 "multiplexer number", which is actually an encoded address. A value of 1 will be the first multiplexer, 2 is the
 second one, and so forth.
+
+(See custom Eagle schematic in github project at https://github.com/lelandg/pypboy)
 
 Written by Leland Green... (Boogieman/aBoogieman)
 Contact me via Section9.space , on Google+ or Facebook.
