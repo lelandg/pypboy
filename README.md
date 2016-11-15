@@ -1,6 +1,8 @@
 pypboy
 ======
 
+***The Important Stuff***
+
 ***Warning:*** 
 
 * This Pip Boy project is non-functional and requires special hardware. See custom schematic in Schematics folder
